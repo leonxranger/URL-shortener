@@ -1,13 +1,13 @@
 import { getAuth } from "@clerk/express";
 
 export const RequireAuth =(req,res,next)=>{
-    const UserID = getAuth(req);
+    const {UserId} = getAuth(req);
 
-    if(!UserID){
+    if(!UserId){
         res.status(401).json({error: "Unauthorized"});
 
     }
 
-    req.userId = UserID;
+    req.userId = UserId;
     next();
 }
