@@ -3,7 +3,7 @@ import 'dotenv/config'
 import { ConnectDB } from "./db_connection.js";
 import {clerkMiddleware} from "@clerk/express"
 import { Redirector } from "./controllers/Redirecter.js";
-
+import { CLickData } from "./middlewares/ClickData.js";
 
 
 const app = express();
@@ -12,13 +12,13 @@ import apirouter from './routers/URLrouter.js'
 app.use(clerkMiddleware());
 app.use(express.json())
 
-app.get('/:shortcode',Redirector);
+app.get('/:shortcode',CLickData,Redirector);
 
 app.use('/api',apirouter);
 ConnectDB().then(()=>{
     app.listen(port,()=>{
     
-        console.log("Listening to port");
+        console.log("Listening to port " + port);
     })
 })
  

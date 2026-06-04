@@ -11,7 +11,7 @@ router.get('/',(req,res)=>{
 router.post('/urls',RequireAuth,createShortUrl)
 
 //analytics
-router.post('/urls/:id/analytics',()=>{
+router.get('/urls/:id/analytics',()=>{
     
 })
 
