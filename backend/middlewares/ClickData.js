@@ -10,7 +10,7 @@ export const CLickData = (req,res,next)=>{
     req.CLickData={
         ip,
         country:geo?.country || 'unknown',
-        device: ua.isMobile?'Mobile':ua.isTablet?'Tablet':'Desktop',
+        dev ice: ua.isMobile?'Mobile':ua.isTablet?'Tablet':'Desktop',
         browser:ua.browser,
         referrer:req.headers['referer'] || 'Direct',
         timestamp:new Date()
