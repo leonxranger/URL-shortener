@@ -3,6 +3,7 @@ import { RequireAuth } from "../middlewares/AuthMiddleware.js";
 import { createShortUrl } from "../controllers/URLshortener.js";
 import { AnalyticsController } from "../controllers/Analytics.js";
 import { UserURL } from "../controllers/userbasedURL.js";
+import { OverallStats } from "../controllers/AccountOverview.js";
 const router = express.Router();
 
 router.get('/',(req,res)=>{
@@ -10,13 +11,16 @@ router.get('/',(req,res)=>{
 
 })
 //generate short-code -> check if it exists in DB -> save to DB -> return to frontend
-router.post('/urls',RequireAuth,createShortUrl)
+router.post('/urls',RequireAuth,createShortUrl);
 
 //analytics
-router.get('/urls/:id/analytics',RequireAuth,AnalyticsController)
+router.get('/urls/:id/analytics',RequireAuth,AnalyticsController);
 
 //urls belonging to the connected USER
-router.get('/urls/:id',RequireAuth,UserURL)
+router.get('/urls/:id',RequireAuth,UserURL);
+
+//overall-account overview
+router.get('/account-Overview/:id',OverallStats);
 
 //deleting urls
 router.delete('/urls/:id',RequireAuth,)

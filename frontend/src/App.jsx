@@ -1,25 +1,43 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+
+import { Route, useNavigate } from 'react-router-dom'
+import { Routes } from 'react-router-dom'
+import AuthPage from './pages/AuthPage.jsx'
+import { ClerkProvider } from '@clerk/clerk-react'
 import './App.css'
 
+  function AppContent(){
+    const navigate = useNavigate();
+    const Publishable_Key = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
+    if(!Publishable_Key){
+      throw new Error("Missing Publishable Key");
+    }
+
+    return(
+      <ClerkProvider
+        publishableKey={Publishable_Key}
+        routerPush={(to) => navigate(to)}
+        routerReplace={(to) => navigate(to, { replace: true })} 
+      >
+      <Routes>
+        <Route  path='/' element={<AuthPage/>}></Route>
+        <Route></Route>
+
+      </Routes>
+    </ClerkProvider>
+
+    )
+  }
+
+
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-    
-    <div className='flex flex-col items-center gap-10'> 
-    <h1>URL shortener</h1>
-    <input className='h-10 w-100 bg-zinc-400 rounded-xl text-black text-center' placeholder='Enter your URL here'></input>
 
-    <button className='bg-indigo-400 h-10 w-30 rounded-xl text-amber-50 hover:cursor-pointer hover:opacity-75'>Generate</button>
-
-    </div>
-
-    </>
+    <AppContent/>
   )
 }
 
 export default App
+ 
