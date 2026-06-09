@@ -43,6 +43,7 @@ export const Redirector= async(req,res)=>{
                 await RedirectQueue.add('cache-url',{cacheKey,UrlObject:db_hit});
 
                 //for adding to DB-CLICKS
+                //**._id is not the shortcode it is the object id of the mongoDB object */
                 await RedirectQueue.add('save-click',{userID:req.userId , ClickData:req.CLickData ,urlID:db_hit._id.toString() });
                 return res.redirect(redirect_url);
 
