@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Eye, EyeClosed, Star } from 'lucide-react'
 import SignUp from '../Components/SignUp.jsx'
 import Login from '../Components/Login.jsx'
+import { useAuth } from '@clerk/clerk-react'
+import { useNavigate } from 'react-router'
 const reviews = [
   { name: 'Arjun Mehta', handle: '@arjunm', text: 'Brevio cut our campaign links from 120 chars to 14. Analytics dashboard is insane.', stars: 5 },
   { name: 'Priya Nair', handle: '@priyan', text: 'The real-time click map alone is worth it. Saw exactly where our traffic was coming from.', stars: 5 },
@@ -39,6 +41,12 @@ const AuthPage = () => {
   const row1 = reviews.slice(0, 4)
   const row2 = reviews.slice(4, 8)
   const [mode ,setmode ] = useState('Sign-up');
+  const Navigate = useNavigate();
+  const {isSignedIn} = useAuth();
+
+  useEffect(()=>{
+    if(isSignedIn)Navigate('/dashboard')
+  },[isSignedIn]);
   return (
     <>
       <style>{`

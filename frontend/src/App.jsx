@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Route, useNavigate } from 'react-router-dom'
 import { Routes } from 'react-router-dom'
 import AuthPage from './pages/AuthPage.jsx'
+import AnalyticsDashboard from './pages/AnalyticsDashboard.jsx'
 import { ClerkProvider } from '@clerk/clerk-react'
 import './App.css'
 
@@ -22,7 +23,7 @@ import './App.css'
       >
       <Routes>
         <Route  path='/' element={<AuthPage/>}></Route>
-        <Route></Route>
+        <Route path='/dashboard' element={<AnalyticsDashboard/>}></Route>
 
       </Routes>
     </ClerkProvider>
