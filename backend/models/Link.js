@@ -20,6 +20,11 @@ const LinkSchema = new mongoose.Schema({
     userID:{
          type: String,
          required: true 
+    },
+    clicks:{
+        type:Number,
+        default:0,
+        required:true
     }
 });
 

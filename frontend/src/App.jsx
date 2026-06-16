@@ -5,6 +5,7 @@ import { Routes } from 'react-router-dom'
 import AuthPage from './pages/AuthPage.jsx'
 import AnalyticsDashboard from './pages/AnalyticsDashboard.jsx'
 import { ClerkProvider } from '@clerk/clerk-react'
+import { AuthenticateWithRedirectCallback } from '@clerk/clerk-react'
 import './App.css'
 
   function AppContent(){
@@ -24,7 +25,15 @@ import './App.css'
       <Routes>
         <Route  path='/' element={<AuthPage/>}></Route>
         <Route path='/dashboard' element={<AnalyticsDashboard/>}></Route>
-
+        <Route 
+          path="/sso-callback" 
+          element={
+            <AuthenticateWithRedirectCallback 
+              signInForceRedirectUrl="/dashboard" 
+              signUpForceRedirectUrl="/dashboard" 
+            />
+          } 
+        />
       </Routes>
     </ClerkProvider>
 
