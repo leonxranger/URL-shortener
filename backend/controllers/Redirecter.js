@@ -9,8 +9,8 @@ const RedirectQueue = new Queue('redirect-jobs',{connection:redis});
 
 
 export const Redirector= async(req,res)=>{
-    const {short_URL} = req.body;
-    const cacheKey = `link:clicked:${short_URL}`;
+    const {shortcode} = req.params;
+    const cacheKey = `link:clicked:${shortcode}`;
     //the cachekey is the key which stores the URL OBJECT  in the redis db
     //if not found you are going to save the DB object as the value for the cachekey
     //*hand the cacheKey to BullMQ for storage
@@ -21,8 +21,11 @@ export const Redirector= async(req,res)=>{
         const cache_hit = cached?JSON.parse(cached):null;
 
         if(cache_hit){
+            console.log("Redirected from cache");
             const redirect_url = new URL(cache_hit?.longURL).href ;
             if(redirect_url){
+                await RedirectQueue.add('save-click',{userID:req.userId , ClickData:req.CLickData ,urlID:cache_hit._id.toString() });
+                console.log("Click data added to CLICKS db");
                 return res.redirect(redirect_url);
             }else{
                 return res.status(404).send("the long URl for the object does not exist");
@@ -31,20 +34,19 @@ export const Redirector= async(req,res)=>{
 
         //if it is not present in cache then look for in the db
 
-        const db_hit = await LINK.findOne({short_code:short_URL});
+        const db_hit = await LINK.findOne({short_code:shortcode});
 
         if(db_hit){
             const redirect_url = new URL(db_hit?.longURL).href ;
-
+            console.log("db-hit!!!",redirect_url)
             if(redirect_url){
                 //todo: // here insert the bullMQ code , which adds the url to the redis cache . if bullMQ is not used we might risk blocking the thread
                 //*done
                 //for saving to REDIS
                 await RedirectQueue.add('cache-url',{cacheKey,UrlObject:db_hit});
-
                 //for adding to DB-CLICKS
                 //**._id is not the shortcode it is the object id of the mongoDB object */
-                await RedirectQueue.add('save-click',{userID:req.userId , ClickData:req.CLickData ,urlID:db_hit._id.toString() });
+                await RedirectQueue.add('save-click',{ ClickData:req.CLickData ,urlID:db_hit._id.toString() });
                 return res.redirect(redirect_url);
 
             }else{
@@ -56,8 +58,8 @@ export const Redirector= async(req,res)=>{
 
 
     }catch(err){
-    
-        res.status(400).send("Error in redirecting Controller")
+        console.log(err)
+        res.status(400).send("Error in redirecting Controller",err)
     
     }
      

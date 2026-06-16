@@ -4,6 +4,7 @@ import { GenerateShortCode } from "../Utils/Encoder.js";
 export const createShortUrl= async(req,res)=>{
     const base_url = process.env.BASE_URL;
     const {longURL} = req.body;
+    console.log("request-bod:" , req.body);
     const UserID = req.userId;
 
     let ShortCode = "";
@@ -11,13 +12,14 @@ export const createShortUrl= async(req,res)=>{
 
     do{
         ShortCode = GenerateShortCode();
-        const exists = await LINK.findOne({short_code:ShortCode});
+        exists = await LINK.findOne({short_code:ShortCode});
     }while(exists);
 
     await LINK.create({
         longURL:longURL ,
         short_code:ShortCode ,
-        userID:UserID
+        userID:UserID 
+       
     });
 
     res.status(200).json({URL:`${base_url}/${ShortCode}`});

@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { Eye, EyeClosed, Star } from 'lucide-react'
 import { useSignIn } from '@clerk/clerk-react'
 import toast, { Toaster } from 'react-hot-toast';
-
+import { handelsocialLogin } from '../Util/oAuth.js'
 
 const Login = ({mode,onSwitch}) => {
 
@@ -112,6 +112,7 @@ const Login = ({mode,onSwitch}) => {
                     key={name}
                     type="button"
                     className="flex-1 h-10 bg-white border border-[#e5e5e5] rounded-lg flex items-center justify-center gap-2 hover:bg-[#f7f7f7] hover:border-[#d0d0d0] active:scale-[0.97] transition-all cursor-pointer"
+                    onClick={()=>handelsocialLogin(name,isLoaded,signIn)}
                   >
                     <img src={provider.src} alt={provider.label} className="h-4 w-4 object-contain" />
                     <span className="text-sm text-[#555]">{provider.label}</span>
