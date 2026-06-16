@@ -9,9 +9,10 @@ import cors from 'cors'
 
 
 const app = express();
+const client_url = process.env.CLIENT_URL;
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: client_url,
   credentials: true,
 }))
 app.use(express.json());
@@ -24,7 +25,6 @@ app.use(express.json())
 
 
 app.use('/api',apirouter);
-
 app.get('/:shortcode',CLickData,Redirector);
 
 ConnectDB().then(()=>{
