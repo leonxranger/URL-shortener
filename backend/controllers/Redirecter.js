@@ -3,7 +3,10 @@ import { Queue } from "bullmq";
 import IORedis from 'ioredis';
 
 //we dont want the connection / queue to be recreated everytime the function is run ,so we declare them outside the function
-const redis = new IORedis(process.env.REDIS_URL);
+const redis = new IORedis(process.env.REDIS_URL,{
+    maxRetriesPerRequest:null,
+    tls:{},
+});
 const RedirectQueue = new Queue('redirect-jobs',{connection:redis});
 
 
