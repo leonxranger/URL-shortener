@@ -8,7 +8,8 @@ import geoip from 'geoip-lite';
 import useragent from 'express-useragent';
 
 const redis = new IORedis(process.env.REDIS_URL,{
-    maxRetriesPerRequest:null
+    maxRetriesPerRequest:null,
+    tls:{}
 });
 
 const processClick = async ({ClickData,urlID}) => {
