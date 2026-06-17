@@ -9,9 +9,19 @@ import cors from 'cors'
 
 
 const app = express();
+const allowedOrigins = process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',') : [];
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin:function (origin, callback) {
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Blocked by CORS policy'));
+    }
+  },
+
   credentials: true,
 }))
 app.use(express.json());
