@@ -34,7 +34,6 @@ app.use(express.json())
 
 
 app.use('/api',apirouter);
-
 app.get('/:shortcode',CLickData,Redirector);
 
 ConnectDB().then(()=>{
