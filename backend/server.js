@@ -9,7 +9,7 @@ import cors from 'cors'
 
 
 const app = express();
-const allowedOrigins = process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',') : [];
+const allowedOrigins = process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',').map(url=>url.trim()):[];
 
 app.use(cors({
   origin:function (origin, callback) {
