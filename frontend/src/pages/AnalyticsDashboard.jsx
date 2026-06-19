@@ -6,6 +6,7 @@ import ActiveLinks from '../Components/ActiveLinks.jsx';
 import { useAccountOverview } from '../hooks/useLinks.js';
 import AccountStats from '../Components/AccountStats.jsx';
 import Loading from '../Components/Loading.jsx';
+import Graph from '../Components/Graph.jsx';
 const AnalyticsDashboard = () => {
     const {signOut} = useClerk();
     const user = useUser();
@@ -27,7 +28,7 @@ const AnalyticsDashboard = () => {
 
 
   return (
-    <div className='flex w-screen h-screen flex-col gap-10 p-10'> 
+    <div className='flex w-screen h-screen flex-col gap-10 p-10 overflow-x-hidden '> 
       {/* //header part */}
       <div className='flex w-full h-[75px] p-5 items-center border-2 flex-row justify-between '>
         <h1 className='font-primary text-4xl'>ZipLink</h1>
@@ -73,10 +74,9 @@ const AnalyticsDashboard = () => {
 
         </div>
 
-        <h1 className='bg-red-400'>Account Overview</h1>
-
-
-        <div className='bg-red-400 h-full w-full'>
+        <div className=' h-full w-full'>
+         {isPending?<Loading></Loading>:<Graph
+         CLicks={data?.clicks}/>}
         </div>
       </div>
     </div>
