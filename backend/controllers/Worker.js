@@ -7,33 +7,42 @@ import mongoose from "mongoose";
 import geoip from 'geoip-lite';
 import useragent from 'express-useragent';
 
-const redis = new IORedis(process.env.REDIS_URL,{
-    maxRetriesPerRequest:null,
-    tls:{}
+const redis_url = process.env.REDIS_URL;
+
+export const isTLS = redis_url.startsWith('rediss://');
+
+const redis = new IORedis(redis_url,{maxRetriesPerRequest:null},{
+    ...(isTLS?{tls:{}} : {})
 });
 
 const processClick = async ({ClickData,urlID}) => {
-  const { ip, device, referrer } = ClickData;
-
+  console.log("ClickData:",ClickData)
+  const { ip, ua, referrer } = ClickData;
   const geo = geoip.lookup(ip);
-  const ua = useragent.parse(userAgent);
-
-  await Click.create({
-    urlId,
+  try{
+      const result = await CLICKS.create({
+    urlID,
     ip,
     country: geo?.country || 'unknown',
-    city: geo?.city || 'unknown',
     device: ua.isMobile ? 'Mobile' : ua.isTablet ? 'Tablet' : 'Desktop',
     browser: ua.browser,
-    referrer,
+    referrer:referrer,
     timestamp: new Date(),
-  });
+    });
+      console.log("Final Click Data",result);
+
+
+  }catch(err){
+    console.log(err);
+  }
+
+
 };
 
 
 new Worker('redirect-jobs',async(job)=>{
     if(job.name === 'cache-url'){
-        const {cacheKey , UrlObject} = job.data;
+         const {cacheKey , UrlObject} = job.data;
         await redis.set(cacheKey, JSON.stringify(UrlObject),'EX',3600)
         console.log("link saved to cache");
     }if(job.name === 'save-click'){

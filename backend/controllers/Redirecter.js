@@ -1,12 +1,15 @@
 import { LINK } from "../models/Link.js";
 import { Queue } from "bullmq";
 import IORedis from 'ioredis';
-
+import { isTLS } from "./Worker.js";
 //we dont want the connection / queue to be recreated everytime the function is run ,so we declare them outside the function
-const redis = new IORedis(process.env.REDIS_URL,{
-    maxRetriesPerRequest:null,
-    tls:{},
-});
+const redis = new IORedis(process.env.REDIS_URL,
+    {maxRetriesPerRequest:null},
+   {
+        ...(isTLS?{tls:{}} : {})
+
+   }
+);
 const RedirectQueue = new Queue('redirect-jobs',{connection:redis});
 
 
@@ -27,7 +30,7 @@ export const Redirector= async(req,res)=>{
             console.log("Redirected from cache");
             const redirect_url = new URL(cache_hit?.longURL).href ;
             if(redirect_url){
-                await RedirectQueue.add('save-click',{userID:req.userId , ClickData:req.CLickData ,urlID:cache_hit._id.toString() });
+                await RedirectQueue.add('save-click',{userID:req.userId , ClickData:req.ClickData ,urlID:cache_hit._id.toString() });
                 console.log("Click data added to CLICKS db");
                 return res.redirect(redirect_url);
             }else{
@@ -49,7 +52,7 @@ export const Redirector= async(req,res)=>{
                 await RedirectQueue.add('cache-url',{cacheKey,UrlObject:db_hit});
                 //for adding to DB-CLICKS
                 //**._id is not the shortcode it is the object id of the mongoDB object */
-                await RedirectQueue.add('save-click',{ ClickData:req.CLickData ,urlID:db_hit._id.toString() });
+                await RedirectQueue.add('save-click',{ ClickData:req.ClickData ,urlID:db_hit._id.toString() });
                 return res.redirect(redirect_url);
 
             }else{

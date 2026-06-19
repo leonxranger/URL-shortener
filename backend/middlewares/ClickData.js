@@ -16,9 +16,9 @@ export const CLickData = (req,res,next)=>{
 
     const ua = useragent.parse(req.headers['user-agent']);
 
-    req.CLickData={
+    req.ClickData={
         ip,
-        device: ua.isMobile?'Mobile':ua.isTablet?'Tablet':'Desktop',
+        ua: ua,
         referrer:req.headers['referer'] || 'Direct',
         timestamp:new Date()
 
