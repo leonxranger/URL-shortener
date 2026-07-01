@@ -1,17 +1,17 @@
-import { LINK } from "../models/Link.js";
+    import { LINK } from "../models/Link.js";
 
-export const UserURL = async(req,res)=>{
+    export const UserURL = async(req,res)=>{
 
-    try{
+        try{
 
-        const {id} = req.paramss;
+            const {id} = req.params;
 
-        const result = await LINK.find({userID:id});
+            const result = await LINK.find({userID:id});
 
-        return res.status(200).json({data:result})
+            return res.status(200).json({data:result})
 
-    }catch(err){
-        console.log(err);
+        }catch(err){
+            console.log(err);
+        }
+
     }
-
-}

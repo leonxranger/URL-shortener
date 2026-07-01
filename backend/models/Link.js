@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+ import mongoose from "mongoose"
 
 const LinkSchema = new mongoose.Schema({
     short_code:{

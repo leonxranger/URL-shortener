@@ -1,22 +1,11 @@
+import {redis} from '../Config/Redis.js'
 import { Worker } from "bullmq";
-import IORedis from "ioredis";
 import { CLICKS } from "../models/Clicks.js"
-
 import { LINK } from "../models/Link.js";
 import mongoose from "mongoose";
 import geoip from 'geoip-lite';
 import useragent from 'express-useragent';
-
-const redis_url = process.env.REDIS_URL;
-
-export const isTLS = redis_url.startsWith('rediss://');
-
-const redis = new IORedis(redis_url,{maxRetriesPerRequest:null},{
-    ...(isTLS?{tls:{}} : {})
-});
-
 const processClick = async ({ClickData,urlID}) => {
-  console.log("ClickData:",ClickData)
   const { ip, ua, referrer } = ClickData;
   const geo = geoip.lookup(ip);
   try{
@@ -29,9 +18,6 @@ const processClick = async ({ClickData,urlID}) => {
     referrer:referrer,
     timestamp: new Date(),
     });
-      console.log("Final Click Data",result);
-
-
   }catch(err){
     console.log(err);
   }
