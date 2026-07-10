@@ -5,8 +5,6 @@ import { NavLink } from 'react-router-dom';
     { to: '/dashboard', label: 'Dashboard', icon: Home },
     { to: '/links', label: 'Links', icon: Link2 },
     { to: '/analytics', label: 'Analytics', icon: BarChart2 },
-    { to: '/audience', label: 'Audience', icon: Users },
-    { to: '/settings', label: 'Settings', icon: Settings },
 ];
 
 const navLinkClass = ({ isActive }) =>

@@ -20,7 +20,7 @@ const TITLES = {
   "/dashboard": "Overview",
   "/links": "My Links",
   "/analytics": "Link Analytics",
-  "/settings": "Settings",
+
 };
 
 function pageTitle(pathname) {
