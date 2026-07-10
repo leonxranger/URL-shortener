@@ -78,7 +78,6 @@ export function formatNumber(n) {
   return n.toLocaleString();
 }
 
-/* ─── Shimmer Skeleton ──────────────────────────────────────── */
 
 
 /* ─── Copy Button ───────────────────────────────────────────── */
@@ -209,8 +208,6 @@ function BarRow({ label, value, max, color, rank, icon }) {
     </div>
   );
 }
-
-/* ─── LinkSelector (Enhanced) ──────────────────────────────── */
 
 
 /* ─── Custom Chart Tooltip ─────────────────────────────────── */
