@@ -15,6 +15,7 @@ import { LinkSelector } from "./LinkWiseComponents.jsx";
 import { Skeleton } from "./LinkWiseComponents.jsx";
 import { linkAccent } from "./LinkWiseComponents.jsx";
 import {PAGE_BG,INK,MUTED,SUBTLE,BORDER,NAVY,NAVY_GRAD,SKY_BG,MINT_BG,LAV_BG,ROSE_BG,AMBER_BG,SKY,MINT,LAV,ROSE,AMBER} from '../Util/ColourSettings.js'
+import { data } from "react-router";
 /* ─── Refined Design Tokens ───────────────Api is up and running──────────────────── */
 
 
@@ -311,6 +312,13 @@ export default function LinkWiseStats() {
   const totalDirect = sourceSeries.reduce((a, b) => a + b.Direct, 0);
   const totalReferral = sourceSeries.reduce((a, b) => a + b.Referral, 0);
   const totalSourceClicks = totalDirect + totalReferral;
+
+  useEffect(()=>{
+    if(!analyticsLoading){
+    console.log(analyticsRaw);
+
+    }
+  },[analyticsRaw])
 
   return (
     <div className="w-full min-h-screen p-4 " style={{ background: PAGE_BG, ...body }}>
