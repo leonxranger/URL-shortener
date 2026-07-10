@@ -4,6 +4,7 @@ import { createShortUrl } from "../controllers/URLshortener.js";
 import { AnalyticsController } from "../controllers/Analytics.js";
 import { UserURL } from "../controllers/userbasedURL.js";
 import { OverallStats } from "../controllers/AccountOverview.js";
+import { LinkWiseData } from "../controllers/LinkWise.js";
 const router = express.Router();
 
 router.get('/',(req,res)=>{
@@ -24,4 +25,8 @@ router.get('/account-Overview/:id',OverallStats);
 
 //deleting urls
 router.delete('/urls/:id',RequireAuth,)
+
+
+//link wise analytics
+router.get('/analytics/:shortcode',RequireAuth,LinkWiseData);
 export default router;

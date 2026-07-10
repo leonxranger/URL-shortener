@@ -3,10 +3,13 @@ import { useState } from 'react'
 import { Route, useNavigate } from 'react-router-dom'
 import { Routes } from 'react-router-dom'
 import AuthPage from './pages/AuthPage.jsx'
-import AnalyticsDashboard from './pages/AnalyticsDashboard.jsx'
 import { ClerkProvider } from '@clerk/clerk-react'
 import { AuthenticateWithRedirectCallback } from '@clerk/clerk-react'
+import Links from './pages/Links.jsx'
 import './App.css'
+import DashboardLayout from './pages/DashboardLayout.jsx'
+import AnalyticsDashboard from './Components/AnalyticsDashboard.jsx'
+import LinkwiseStats from './Components/LinkWiseStats.jsx'
 
   function AppContent(){
     const navigate = useNavigate();
@@ -24,16 +27,20 @@ import './App.css'
       >
       <Routes>
         <Route  path='/' element={<AuthPage/>}></Route>
-        <Route path='/dashboard' element={<AnalyticsDashboard/>}></Route>
-        <Route 
+      <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<AnalyticsDashboard/>} />
+              <Route path="/links" element={<Links/>} />
+              <Route path='/analytics' element={<LinkwiseStats/>}/>
+            </Route>        <Route 
           path="/sso-callback" 
           element={
             <AuthenticateWithRedirectCallback 
               signInForceRedirectUrl="/dashboard" 
               signUpForceRedirectUrl="/dashboard" 
             />
-          } 
-        />
+          }/>
+          
+   
       </Routes>
     </ClerkProvider>
 

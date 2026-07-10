@@ -43,9 +43,11 @@ export const userURls=(id)=>{
         queryFn:async()=>{
             const res = await URLapi.get(`/urls/${id}`);
             return res.data.data;
-        }
+        },
+        enabled: !!id,
     })  
-}
+     return result;
+    }
 
 export const useAccountOverview=(id)=>{
     console.log("id",id)
@@ -76,5 +78,20 @@ export const deleteUrl=(id)=>{
         }
     })
 
+    return result;
+}
+
+
+export const useLinkwiseStats=(id,range)=>{
+        const result = useQuery({
+            queryKey: ["analytics", id, range],
+        queryFn:async()=>{
+            const res = await URLapi.get(`/analytics/${id}?range=${range}`);
+            console.log("response for link wise",res.data.Data);
+            return res.data.Data;
+        },
+        enabled: !!id,
+
+    })
     return result;
 }

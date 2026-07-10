@@ -1,15 +1,18 @@
 import { LINK } from "../models/Link.js";
 import { Queue } from "bullmq";
-import IORedis from 'ioredis';
-import { isTLS } from "./Worker.js";
-//we dont want the connection / queue to be recreated everytime the function is run ,so we declare them outside the function
-const redis = new IORedis(process.env.REDIS_URL,
-    {maxRetriesPerRequest:null},
-   {
-        ...(isTLS?{tls:{}} : {})
+import { redis } from "../Config/Redis.js";
+// import IORedis from 'ioredis';
+// import { isTLS } from "./Worker.js";
+// //we dont want the connection / queue to be recreated everytime the function is run ,so we declare them outside the function
+// const redis = new IORedis(process.env.REDIS_URL,
+//     {maxRetriesPerRequest:null},
+//    {
+//         ...(isTLS?{tls:{}} : {})
 
-   }
-);
+//    }
+// );
+
+
 const RedirectQueue = new Queue('redirect-jobs',{connection:redis});
 
 
